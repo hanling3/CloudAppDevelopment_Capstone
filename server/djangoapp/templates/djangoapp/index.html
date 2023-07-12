@@ -20,37 +20,43 @@
         <a class="navbar-brand" href="#">Dealership Review</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>  
-        {% if user.is_authenticated %}
-        <li>
-            <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-            <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
-        </li> 
-        {% else %}
-        <li>
-            <form class="form-inline" action="{% url 'djangoapp:login'%}" method='post'>
-            {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Username" name="username" >
-                    <input type="password" class="form-control" placeholder="Username" name="psw" >
-                    <button class="btn btn-primary" type="submit">Login</button>
-                    <a class="btn btn-link" href="{% url 'djangoapp: registration' %}">Sign Up</a> 
-                </div> 
-            </form>  
-        </li>  
-        {% endif %}
-        
-        <!-- <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'djangoapp:about' %}"> About </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'djangoapp:contact' %}"> Contact Us </a>                    
-                </li>
+        </button> 
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="nav navbar-nav navbar-right"> 
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                </li> 
+                {% else %}
+                <li>
+                    <form class="form-inline" action="{% url 'djangoapp:login'%}" method='post'>
+                    {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" name="username" >
+                            <input type="password" class="form-control" placeholder="Username" name="psw" >
+                            <button class="btn btn-primary" type="submit">Login</button>
+                            <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a> 
+                        </div> 
+                    </form>  
+                </li>  
+                {% endif %}
             </ul>
-        </div> -->
+        </div>
     </nav>
+
+    <!-- footer -->
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-light bg-light">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:about' %}"> About </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}"> Contact Us </a>                    
+            </li>
+        </ul>
+    </nav>
+
     <!--Add a dealer table here -->
 
     </body>
