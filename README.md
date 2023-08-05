@@ -34,3 +34,7 @@ You must complete all the labs to successfully complete the project.
 **Containerize your application**
 1. Add deployment artifacts to your application
 2. Deploy your application
+
+
+**Setup requirements.text**
+python3 -m pip install -U -r requirements.txt
