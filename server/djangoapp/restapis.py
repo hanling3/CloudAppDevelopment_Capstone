@@ -3,13 +3,15 @@ import json
 # import related models here
 from requests.auth import HTTPBasicAuth
 from .models import CarDealer, DealerReview
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_watson.natural_language_understanding_v1 import Features,SentimentOptions
 
 
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))   
 def get_request(url, **kwargs):
-    
     # If argument contain API KEY
     api_key = kwargs.get("api_key")
     print("GET from {} ".format(url))
@@ -113,17 +115,22 @@ def get_dealer_reviews_from_cf(url, dealerId):
                                         car_model = dealer_review["car_model"],
                                         car_year = dealer_review["car_year"]
                                         )
+                review_obj.sentiment = analyze_review_sentiments(review_obj.review)
                 result.append(review_obj)
-            # sentiment = analyze_review_sentiments(review_obj.review)
-            # print(sentiment)
-            # review_obj.sentiment = sentiment
     return result
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
+def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
-
-
+    url = 'https://api.us-east.natural-language-understanding.watson.cloud.ibm.com/instances/19048b08-ca16-4978-ab75-e21ea618d7d7'
+    api_key = 'UqqoRC_29l6JFjyqwhUvkxFnYlW1Sy6gUyudktKujNii'
+    authenticator = IAMAuthenticator(api_key) 
+    natural_language_understanding = NaturalLanguageUnderstandingV1(version='2021-08-01',authenticator=authenticator) 
+    natural_language_understanding.set_service_url(url) 
+    response = natural_language_understanding.analyze( text=text ,features=Features(sentiment=SentimentOptions(targets=[text]))).get_result() 
+    label=json.dumps(response, indent=2) 
+    label = response['sentiment']['document']['label'] 
+    return(label) 
 
