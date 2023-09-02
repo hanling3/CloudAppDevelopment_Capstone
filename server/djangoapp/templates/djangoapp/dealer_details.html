@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Dealership Review</title>
@@ -7,12 +8,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
-    <body>
-
+<body>
     <!--Add a nav bar here -->
 
     <!-- Add reviews as cards -->
-
-    </body>
+    <h1> Review Cards</h1>
+    {% for review in reviews %}
+    {{review.name}}
+    {{review.purchase}}
+    {{review.review}}
+    {{review.id}}
+    {{review.purchase_date}}
+    {{review.car_make}}
+    {{review.car_model}}
+    {{review.car_year}}
+    {% endfor %}
+</body>
 
 </html>
