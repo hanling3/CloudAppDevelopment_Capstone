@@ -64,7 +64,7 @@ def get_dealers_from_cf(url, **kwargs):
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
                                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+                                   state=dealer_doc["st"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
 
     return results
@@ -82,9 +82,9 @@ def get_dealers_by_id_from_cf(url, id):
                 dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
                                    id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
-                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
-            result.append(dealer_obj)
-    return result
+                                   state=dealer_doc["st"], zip=dealer_doc["zip"])
+                result.append(dealer_obj)
+                return result
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(url, dealerId):
@@ -98,18 +98,19 @@ def get_dealer_reviews_from_cf(url, dealerId):
             # print(dealer)
             if(dealer["doc"]["id"] == dealerId):
                 dealer_review  = dealer["doc"]
-                # print("dealer_review")
-                # print(dealer_review )
+                print("dealer_review")
+                print(dealer_review )
                 review_obj = DealerReview(dealership=dealer_review["dealership"],
                                         name=dealer_review["name"],
                                         purchase=dealer_review["purchase"],
-                                        review=dealer_review["review"],
-                                        id = dealer_review["id"],
-                                        purchase_date = dealer_review["purchase_date"],
-                                        car_make = dealer_review["car_make"],
-                                        car_model = dealer_review["car_model"],
-                                        car_year = dealer_review["car_year"]
-                                        )
+                                        review=dealer_review["review"])
+                # .get() returns None if the key is not found
+                # .get("key", "") will return an empty string if the key is not found
+                review_obj.purchase_date = dealer_review.get("purchase_date", "")
+                review_obj.car_make = dealer_review.get("car_make", "")
+                review_obj.car_model = dealer_review.get("car_model", "")
+                review_obj.car_year = dealer_review.get("car_year", "")
+                                        
                 review_obj.sentiment = analyze_review_sentiments(review_obj.review)
                 result.append(review_obj)
     return result

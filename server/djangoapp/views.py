@@ -90,7 +90,7 @@ def get_dealerships(request):
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/get-dealership"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        context["dealership_list"] = dealerships
+        context["dealerships"] = dealerships
         # Return a list of dealer short name
         return render(request, 'djangoapp/index.html', context)
 
