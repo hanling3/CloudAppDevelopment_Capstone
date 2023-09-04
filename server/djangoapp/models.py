@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.timezone import now
+from datetime import datetime
+import json
 
 # Create your models here.
 
@@ -13,8 +14,7 @@ class CarMake(models.Model):
     description = models.CharField(max_length=100, null = False, default = 'car make description')
 
     def __str__(self):
-        return "Name: " + self.name + ", "
-        + "\nDescription: " + self.description
+        return "Name: " + self.name + ", " + "\nDescription: " + self.description
 
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
@@ -32,15 +32,22 @@ class CarModel(models.Model):
     CAR_TYPES = [
         (SEDAN, "Sedan"), (SUV, "SUV"), (WAGON, "Wagon")
     ]
-    carMake = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    name = models.CharField(max_length= 50, null=False, default='car model')
-    dealer_id = models.IntegerField(null=False, default=0)    
-    car_type = models.CharField(max_length=50, choices=CAR_TYPES, default=SUV)
-    year = models.DateField(null=True)
+    car_make = models.ForeignKey(CarMake, null=False, on_delete=models.CASCADE)
+    name = models.CharField(max_length= 50, null=False)
+    # - Dealer id, used to refer a dealer created in cloudant database
+    dealer_id = models.IntegerField(default=1, primary_key=True)    
+    model_type = models.CharField(max_length=50, choices=CAR_TYPES, default=SUV)
+    YEAR_CHOICES = []
+    current_year = datetime.now().year
+    for r in range(1969, (current_year+1)):
+        YEAR_CHOICES.append((r, r))
+    year = models.IntegerField(
+        ('year'), choices=YEAR_CHOICES, default=current_year)
+    
     def __str__(self):
         return "Name: " + self.name + "," + \
                 "\n Dealer id: " + str(self.dealer_id) + "," + \
-                "\n Type: " + self.car_type + "," + \
+                "\n Type: " + self.model_type + "," + \
                 "\n Year: " + str(self.year)
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
@@ -70,24 +77,21 @@ class CarDealer:
 
 # <HINT> Create a plain Python class `DealerReview` to hold review data
 class DealerReview:
-        def __init__(self, dealership, name, purchase, review, purchase_date, car_make, car_model, car_year, id):
-            # Dealership
-            self.dealership = dealership
-            # Name
-            self.name = name
-            # Purchase
-            self.purchase = purchase
-            # Review
-            self.review = review
-            # Purchase Date
-            self.purchase_date = purchase_date
-            # Car Make
-            self.car_make = car_make
-            # Car Model
-            self.car_model = car_model
-            # Car Year
-            self.car_year = car_year
-            # Sentiment
-            self.sentiment = ''
-            # ID
-            self.id = id    
+    def __init__(self, dealership, name, purchase, review, purchase_date, car_make, car_model, car_year, id):
+        self.dealership = dealership
+        self.name = name
+        self.purchase = purchase
+        self.review = review
+        self.purchase_date = purchase_date            
+        self.car_make = car_make
+        self.car_model = car_model
+        self.car_year = car_year
+        self.sentiment = ''
+        self.id = id    
+        
+    def __str__(self):
+        return "Review: " + self.review
+
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                            sort_keys=True, indent=4)

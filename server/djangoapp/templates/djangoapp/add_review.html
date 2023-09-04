@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
+        rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
 </head>
-    <body>
-    <!--Add review form here -->
-    </body>
+
+<body>
+    <div class="container">
+        <h1>Submit a Review</h1>
+        {% for car in cars%}
+        <form action="{% url 'djangoapp:add_review' car.dealer_id %}" method="post">
+            {% csrf_token %}
+            <!-- <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div> -->
+            <!-- <div class="form-group">
+                <label for="dealership">Dealership ID:</label>
+                <input type="number" class="form-control" id="dealership" name="dealership" value="{{ dealer.id }}"
+                    readonly>
+            </div>
+            <div class="form-group">
+                <label for="car">Select your car:</label>
+                <select name="car" id="car" class="form-select">
+                    {% for car in cars %}
+                    <option selected value={{car.id}}>{{car.car_make.name}} {{car.name}} {{ car.year }}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+            <!-- <div class="form-group">
+                <label for="review">Review:</label>
+                <textarea class="form-control" id="review" name="review" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="purchase_date">Purchase Date:</label>
+                <input class="date form-control" type="text" id="purchase_date" name="purchase_date">
+            </div>
+            <div class="form-group">
+                <label for="car_model">Car Model:</label>
+                <input type="text" class="form-control" id="car_model" name="car_model">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button> -->
+        </form>
+        {% endfor %}
+    </div>
+    <script type="text/javascript">
+        $('.date').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    </script>
+</body>
+
 </html>

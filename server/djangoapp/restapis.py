@@ -41,7 +41,7 @@ def get_request(url, **kwargs):
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, json_payload, **kwargs):
     result = []
-    response = requests.post(url, params=kwargs, json=payload)
+    response = requests.post(url, params=kwargs, json=json_payload)
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
 # def get_dealers_from_cf(url, **kwargs):
@@ -86,11 +86,6 @@ def get_dealers_by_id_from_cf(url, id):
             result.append(dealer_obj)
     return result
 
-        
-
-
-
-
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
@@ -133,4 +128,3 @@ def analyze_review_sentiments(text):
     label=json.dumps(response, indent=2) 
     label = response['sentiment']['document']['label'] 
     return(label) 
-
