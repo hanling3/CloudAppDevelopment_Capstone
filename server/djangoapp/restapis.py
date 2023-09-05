@@ -69,22 +69,22 @@ def get_dealers_from_cf(url, **kwargs):
 
     return results
 
-def get_dealers_by_id_from_cf(url, id):
-    result = []
+def get_dealer_by_id_from_cf(url, id):
     json = get_request(url)
     if json:
         for dealer in json:
-            # print(dealer)
             if(dealer["doc"]["id"] == id):
                 dealer_doc = dealer["doc"]
-                # print("debugA")
-                # print(dealer_doc)
-                dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                dealer_obj = CarDealer(address=dealer_doc["address"], 
+                                   city=dealer_doc["city"], 
+                                   full_name=dealer_doc["full_name"],
+                                   id=dealer_doc["id"], 
+                                   lat=dealer_doc["lat"],
+                                   long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
-                                   state=dealer_doc["st"], zip=dealer_doc["zip"])
-                result.append(dealer_obj)
-                return result
+                                   state=dealer_doc["st"], 
+                                   zip=dealer_doc["zip"])
+                return dealer_obj
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(url, dealerId):
@@ -94,8 +94,8 @@ def get_dealer_reviews_from_cf(url, dealerId):
     json_result = get_request(url)
     if json_result:
         for dealer in json_result:
-            # print("AAA")
-            # print(dealer)
+            print("AAA")
+            print(dealer)
             if(dealer["doc"]["id"] == dealerId):
                 dealer_review  = dealer["doc"]
                 print("dealer_review")

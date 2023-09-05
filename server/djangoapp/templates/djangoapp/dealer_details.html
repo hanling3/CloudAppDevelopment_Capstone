@@ -10,20 +10,54 @@
 
 <body>
     <!--Add a nav bar here -->
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-light bg-light">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:about' %}"> About </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}"> Contact Us </a>
+            </li>
+        </ul>
+    </nav>
 
     <!-- Add reviews as cards -->
-    <h1> Review Cards</h1>
-    {% for review in reviews %}
-    {{review.name}}
-    {{review.purchase}}
-    {{review.review}}
-    {{review.id}}
-    {{review.purchase_date}}
-    {{review.car_make}}
-    {{review.car_model}}
-    {{review.car_year}}
-    {{review.sentiment}}
-    {% endfor %}
+    <div class="card-columns mx-auto" style="width: 80%;">
+        {% for review in reviews %}
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                {% if review.sentiment == "positive" %}
+                <img class="card-img-left" style="height: 2rem;" src="{{MEDIA_URL}}/emoji/positive.png">
+                {% elif review.sentiment == "neutral" %}
+                <img class="card-img-left" style="height: 2rem;" src="{{ MEDIA_URL }}emoji/neutral.png"
+                    alt="Neutral Sentiment">
+                {% elif review.sentiment == "negative" %}
+                <img class="card-img-left" style="height: 2rem;" src="{{ MEDIA_URL }}emoji/negative.png"
+                    alt="Negative Sentiment">
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                {% if review.car_model %}
+                <h5 class="card-title">
+                    {{review.car_model}},
+                    {{review.car_make}}
+                    <br />
+                    {{review.purchase_date}}
+                </h5>
+                {% else %}
+                <h5 class="card-title">
+                    Unknown
+                </h5>
+                {% endif %}
+                <p class="card-text">
+                    {{review.review}}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 </body>
 
 </html>
