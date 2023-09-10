@@ -16,45 +16,28 @@
 <body>
     <div class="container">
         <h1>Submit a Review</h1>
-        {% for car in cars%}
-        <form action="{% url 'djangoapp:add_review' car.dealer_id %}" method="post">
-            {% csrf_token %}
-            <!-- <div class="form-group">
-                <label for="name">Your Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div> -->
-            <!-- <div class="form-group">
-                <label for="dealership">Dealership ID:</label>
-                <input type="number" class="form-control" id="dealership" name="dealership" value="{{ dealer.id }}"
-                    readonly>
-            </div>
-            <div class="form-group">
-                <label for="car">Select your car:</label>
-                <select name="car" id="car" class="form-select">
-                    {% for car in cars %}
-                    <option selected value={{car.id}}>{{car.car_make.name}} {{car.name}} {{ car.year }}</option>
-                    {% endfor %}
-                </select>
-            </div> -->
-            <!-- <div class="form-group">
-                <label for="review">Review:</label>
-                <textarea class="form-control" id="review" name="review" rows="5" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="purchase_date">Purchase Date:</label>
-                <input class="date form-control" type="text" id="purchase_date" name="purchase_date">
-            </div>
-            <div class="form-group">
-                <label for="car_model">Car Model:</label>
-                <input type="text" class="form-control" id="car_model" name="car_model">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button> -->
-        </form>
+        {% for car in cars %}
+        <p>{{car}}{{car.id}}-{{car.model_type}}-{{car.car_make}}-{{ car.year }}</p>
         {% endfor %}
+        <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
+            {% csrf_token %}
+            <label for="content"> Enter the review content</label>
+            <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+            <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
+            <label for="purchasecheck" class="checkbox-inline"> Has Purchased the car from {{dealer.full_name}}</label>
+            <label for="car"> Selecte your car (model-make-year)</label>
+            <select name="car" id="car" class="form-select" required>
+                {% for car in cars %}
+                <option selected value={{car.id}}>{{car.model_type}}-{{car.car_make}}-{{ car.year|date:"Y" }}</option>
+                {% endfor %}
+            </select>
+            <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate">
+        </form>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
     <script type="text/javascript">
-        $('.date').datepicker({
-            format: 'yyyy-mm-dd'
+        $('.date-own').datepicker({
+            format: 'mm/dd/yyyy'
         });
     </script>
 </body>

@@ -26,6 +26,7 @@ class CarMake(models.Model):
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
 class CarModel(models.Model):
+    id = models.IntegerField(default=1,primary_key=True)
     SEDAN = "Sedan"
     SUV = "SUV"
     WAGON = "Wagon"
@@ -35,7 +36,7 @@ class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, null=False, on_delete=models.CASCADE)
     name = models.CharField(max_length= 50, null=False)
     # - Dealer id, used to refer a dealer created in cloudant database
-    dealer_id = models.IntegerField(default=1, primary_key=True)    
+    # dealer_id = models.IntegerField(default=1)    
     model_type = models.CharField(max_length=50, choices=CAR_TYPES, default=SUV)
     YEAR_CHOICES = []
     current_year = datetime.now().year
@@ -46,7 +47,6 @@ class CarModel(models.Model):
     
     def __str__(self):
         return "Name: " + self.name + "," + \
-                "\n Dealer id: " + str(self.dealer_id) + "," + \
                 "\n Type: " + self.model_type + "," + \
                 "\n Year: " + str(self.year)
 
