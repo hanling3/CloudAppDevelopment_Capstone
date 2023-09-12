@@ -16,9 +16,6 @@
 <body>
     <div class="container">
         <h1>Submit a Review</h1>
-        {% for car in cars %}
-        <p>{{car}}{{car.id}}-{{car.model_type}}-{{car.car_make}}-{{ car.year }}</p>
-        {% endfor %}
         <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
             {% csrf_token %}
             <label for="content"> Enter the review content</label>
@@ -28,7 +25,7 @@
             <label for="car"> Selecte your car (model-make-year)</label>
             <select name="car" id="car" class="form-select" required>
                 {% for car in cars %}
-                <option selected value={{car.id}}>{{car.model_type}}-{{car.car_make}}-{{ car.year|date:"Y" }}</option>
+                <option selected value={{car.id}}>{{car.model_type}}-{{car.car_make.name}}-{{ car.year }}</option>
                 {% endfor %}
             </select>
             <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate">
