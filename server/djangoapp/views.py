@@ -142,11 +142,11 @@ def add_review(request, dealer_id):
             payload["purchase_date"] = request.POST["purchasedate"]
             payload["car_make"] = car.car_make.name
             payload["car_model"] = car.name
-            payload["car_year"] = int(car.year.strftime("%Y"))
+            payload["car_year"] = car.year
 
             json_payload = {"review": payload}
             url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/post-review"
-            post_request(url, json_payload, dealerId=dealer_id)
+            post_request(url, json_payload, dealer_id=dealer_id)
             # Fetch updated reviews for this dealer
             # updated_reviews = get_dealer_reviews_from_cf(url, dealer_id)
             return HttpResponseRedirect('djangoapp:dealer_details', dealer_id=dealer_id)
