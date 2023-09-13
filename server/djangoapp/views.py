@@ -96,24 +96,24 @@ def get_dealerships(request):
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-def get_dealer_details(request, dealer_id):
+def get_dealer_details(request, id):
     context ={}
     if request.method == "GET":
         dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/get-dealership"
         # Get dealers from the URL
-        dealer = get_dealer_by_id_from_cf(dealer_url, dealer_id)
+        dealer = get_dealer_by_id_from_cf(dealer_url, id)
         context["dealer"] = dealer
         review_url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/get-review"
-        reviews = get_dealer_reviews_from_cf(review_url, dealer_id)
+        reviews = get_dealer_reviews_from_cf(review_url, id)
         context["reviews"] = reviews
         return render(request, 'djangoapp/dealer_details.html', context)
 
 
 # Create a `add_review` view to submit a review
-def add_review(request, dealer_id):
+def add_review(request, id):
     context= {}
     dealer_url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/get-dealership"
-    dealer = get_dealer_by_id_from_cf(dealer_url, dealer_id)
+    dealer = get_dealer_by_id_from_cf(dealer_url, id)
     context["dealer"] = dealer
     # print("debug dealer")
     # print(dealer)
@@ -133,7 +133,7 @@ def add_review(request, dealer_id):
             car = CarModel.objects.get(pk=car_id)
             payload["time"] = datetime.utcnow().isoformat()
             payload["name"] = request.user.username
-            payload["dealership"] = dealer_id
+            payload["dealership"] = id
             payload["review"] = request.POST["content"]
             payload["purchase"] = False
             if "purchasecheck" in request.POST:
@@ -146,15 +146,15 @@ def add_review(request, dealer_id):
 
             json_payload = {"review": payload}
             url = "https://us-south.functions.appdomain.cloud/api/v1/web/350f381a-47f4-43b7-9b23-baf89c5620a3/dealership-package/post-review"
-            post_request(url, json_payload, dealer_id=dealer_id)
+            post_request(url, json_payload, id=id)
             # Fetch updated reviews for this dealer
-            # updated_reviews = get_dealer_reviews_from_cf(url, dealer_id)
-            return HttpResponseRedirect('djangoapp:dealer_details', dealer_id=dealer_id)
+            # updated_reviews = get_dealer_reviews_from_cf(url, id)
+            return HttpResponseRedirect('djangoapp:dealer_details', id=id)
         else:
             return HttpResponse("You must be logged in to post a review.")
     else:
         # Handle non-POST cases here
-        return HttpResponseRedirect('djangoapp:dealer_details', dealer_id=dealer_id)
+        return HttpResponseRedirect('djangoapp:dealer_details', id=id)
     # no any leading or trailing spaces around 'dealer_details'
 
 
