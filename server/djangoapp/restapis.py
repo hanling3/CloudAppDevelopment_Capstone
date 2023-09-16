@@ -62,23 +62,23 @@ def get_dealers_from_cf(url, **kwargs):
             dealer_doc = dealer["doc"]
             # Create a CarDealer object with values in `doc` object
             dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                   dealer_id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
                                    state=dealer_doc["st"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
 
     return results
 
-def get_dealer_by_id_from_cf(url, id):
+def get_dealer_by_id_from_cf(url, dealer_id):
     json = get_request(url)
     if json:
         for dealer in json:
-            if(dealer["doc"]["id"] == id):
+            if(dealer["doc"]["id"] == dealer_id):
                 dealer_doc = dealer["doc"]
                 dealer_obj = CarDealer(address=dealer_doc["address"], 
                                    city=dealer_doc["city"], 
                                    full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], 
+                                   dealer_id=dealer_doc["id"], 
                                    lat=dealer_doc["lat"],
                                    long=dealer_doc["long"],
                                    short_name=dealer_doc["short_name"],
@@ -87,7 +87,7 @@ def get_dealer_by_id_from_cf(url, id):
                 return dealer_obj
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-def get_dealer_reviews_from_cf(url, id):
+def get_dealer_reviews_from_cf(url, dealer_id):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
     result = []
@@ -96,7 +96,7 @@ def get_dealer_reviews_from_cf(url, id):
         for dealer in json_result:
             print("AAA")
             print(dealer)
-            if(dealer["doc"]["id"] == id):
+            if(dealer["doc"]["id"] == dealer_id):
                 dealer_review  = dealer["doc"]
                 print("dealer_review")
                 print(dealer_review )
@@ -110,7 +110,7 @@ def get_dealer_reviews_from_cf(url, id):
                 review_obj.car_make = dealer_review.get("car_make", "")
                 review_obj.car_model = dealer_review.get("car_model", "")
                 review_obj.car_year = dealer_review.get("car_year", "")
-                review_obj.id = dealer_review.get("id", "")
+                review_obj.dealer_id = dealer_review.get("dealer_id", "")
                                         
                 review_obj.sentiment = analyze_review_sentiments(review_obj.review)
                 result.append(review_obj)

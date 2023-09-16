@@ -25,7 +25,7 @@
         <h1> Reviews for {{dealer.full_name}}</h1>
         {% if user.is_authenticated %}
 
-        <a href="{% url 'djangoapp:add_review' dealer.id %}">
+        <a href="{% url 'djangoapp:add_review' dealer.dealer_id %}">
             <b>Write a car review</b>
         </a>
         {% endif%}

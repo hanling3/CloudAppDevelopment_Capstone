@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <h1>Submit a Review</h1>
-        <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
+        <form action="{% url 'djangoapp:add_review' dealer.dealer_id %}" method="post">
             {% csrf_token %}
             <label for="content"> Enter the review content</label>
             <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
@@ -26,9 +26,9 @@
             </label>
             <br />
             <label for="car"> Selecte your car (model-make-year)</label>
-            <select name="car" id="car" class="form-select" required>
+            <select name="car_id" id="car_id" class="form-select" required>
                 {% for car in cars %}
-                <option selected value={{car.id}}>{{car.model_type}}-{{car.car_make.name}}-{{ car.year }}</option>
+                <option selected value={{car.car_id}}>{{car.model_type}}-{{car.car_make.name}}-{{ car.year }}</option>
                 {% endfor %}
             </select>
             <br />

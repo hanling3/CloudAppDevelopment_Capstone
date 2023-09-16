@@ -26,8 +26,7 @@ class CarMake(models.Model):
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
 class CarModel(models.Model):
-    # - Dealer id, used to refer a dealer created in cloudant database  
-    id = models.IntegerField(default=1,primary_key=True)
+    car_id = models.IntegerField(default=1,primary_key=True)
     SEDAN = "Sedan"
     SUV = "SUV"
     WAGON = "Wagon"
@@ -51,7 +50,7 @@ class CarModel(models.Model):
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 class CarDealer:
-    def __init__(self, address, city, full_name, id, lat, long, short_name, state, zip):
+    def __init__(self, address, city, full_name, dealer_id, lat, long, short_name, state, zip):
         # Dealer address
         self.address = address
         # Dealer city
@@ -59,7 +58,7 @@ class CarDealer:
         # Dealer Full Name
         self.full_name = full_name
         # Dealer id
-        self.id = id
+        self.dealer_id = dealer_id
         # Location lat
         self.lat = lat
         # Location long
@@ -88,7 +87,7 @@ class DealerReview:
         self.car_year = ""
         self.sentiment = ""
         # dealer id
-        self.id = ""
+        self.dealer_id = ""
         
     def __str__(self):
         return "Review: " + self.review
